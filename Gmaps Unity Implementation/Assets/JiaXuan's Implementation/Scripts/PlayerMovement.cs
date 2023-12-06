@@ -23,10 +23,6 @@ public class PlayerMovement : MonoBehaviour
         if (!ZeroGravity.noGravity)
         {
             Vector3 move = transform.right * x + transform.forward * z;
-
-            // Move the player
-            transform.Translate(move * speed * Time.deltaTime, Space.World);
-
             if (ZeroGravity.platformShift)
             {
                 // Draw a ray from the player's position in the direction of the current gravity
@@ -43,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
                     Debug.DrawRay(transform.position, gravityDirection * 5f, Color.blue);
                 }
                 rb.AddForce(gravityVector, ForceMode.Force);
+                // Adjust the move vector based on the surface normal
+                move = Vector3.ProjectOnPlane(move, hit.normal).normalized;
+                // Move the player along the surface
+                transform.Translate(move * speed * Time.deltaTime, Space.World);
             }
             else
             {
@@ -50,6 +50,9 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 gravityVector = Vector3.down * -gravity * rb.mass;;
                 // Use Rigidbody.AddForce to apply constant force in the downward direction
                 rb.AddForce(gravityVector, ForceMode.Force);
+                
+                // Move the player
+                transform.Translate(move * speed * Time.deltaTime, Space.World);
             }
 
             if (Input.GetButtonUp("Jump") && check.isGrounded)

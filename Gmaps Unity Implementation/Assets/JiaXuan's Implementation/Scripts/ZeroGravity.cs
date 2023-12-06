@@ -74,7 +74,7 @@ public class ZeroGravity : MonoBehaviour
             rb.MovePosition(newPosition);
 
             // Rotate the Rigidbody to align with the downwards vector
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, destRot, (elapsedTime / duration) * 0.5f));
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, destRot, (elapsedTime / duration) * 0.25f));
 
             elapsedTime += Time.deltaTime;
             yield return null;
