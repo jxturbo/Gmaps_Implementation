@@ -4,13 +4,13 @@ using UnityEngine;
 public class ZeroGravity : MonoBehaviour
 {
     public Rigidbody rb;
-    public float gravity = -9.81f;
     public bool noGravity;
     private bool gravityToggled;
     public MouseLook MouseLook;
     public bool isMoving = false;
     public bool platformShift;
     public PlayerMovement playerMovement;
+    public GravityStasis gravityStasis;
 
     void Update()
     {
@@ -27,9 +27,9 @@ public class ZeroGravity : MonoBehaviour
             else if (!noGravity)
             {
                 platformShift = false;
+                playerMovement.enabled = true; 
             }
         }
-
         if (noGravity)
         {
             if (Input.GetMouseButtonDown(0) && !isMoving)
@@ -49,11 +49,13 @@ public class ZeroGravity : MonoBehaviour
                     Vector3 upwardsVector = hit.normal;
                     // Start moving the Rigidbody to the hit point
                     StartCoroutine(GravityShift(hit.point, upwardsVector));
+                    gravityStasis.GravityStasisObjectAll(hit.point, upwardsVector);
                     // Log the name of the object that was hit
                     Debug.Log(hit.collider.gameObject.name);
                 }
             }
         }
+
     }
 
     IEnumerator GravityShift(Vector3 targetPosition, Vector3 upwardsVector)

@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 // Mimics constant gravity by pulling the player down
-                Vector3 gravityVector = Vector3.down * -gravity * rb.mass;;
+                Vector3 gravityVector = Vector3.down * -gravity * rb.mass;
                 // Use Rigidbody.AddForce to apply constant force in the downward direction
                 rb.AddForce(gravityVector, ForceMode.Force);
                 
@@ -60,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
                 
                 // Calculate the jump velocity based on the new gravity direction
                 float jumpVelocity = Mathf.Sqrt(2f * Mathf.Abs(jumpHeight) * Mathf.Abs(-gravity));
+                //have it scale to mass
+                jumpVelocity *= rb.mass;
                 // Apply the jump velocity in the direction of the gravity vector
                 if(ZeroGravity.platformShift)
                 {

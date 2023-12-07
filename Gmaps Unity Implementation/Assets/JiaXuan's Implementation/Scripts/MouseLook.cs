@@ -9,6 +9,7 @@ public class MouseLook : MonoBehaviour
     public Rigidbody rb; // Reference to the Rigidbody
     public ZeroGravity ZeroGravity;
     public bool rotationReset;
+    float xRotation = 0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,12 +40,17 @@ public class MouseLook : MonoBehaviour
         {
             // Takes in vertical and horizontal mouse input
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
             if (rotationReset)
             {
                 playerBody.rotation = Quaternion.identity;
                 rotationReset = false;
             }
-
+            xRotation -= mouseY;
+            //restrictions player to looking 90 degrees up and down
+            xRotation = Mathf.Clamp(xRotation, -45f, 45f);
+            //rotates player camera to mouse input
+            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
             // Rotate the player's body (or another parent object) around the y-axis based on mouseX
             playerBody.Rotate(Vector3.up * mouseX);
 
