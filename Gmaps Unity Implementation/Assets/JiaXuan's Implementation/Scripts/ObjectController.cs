@@ -9,12 +9,17 @@ public class ObjectController : MonoBehaviour
     public float gravity = -9.81f; 
     private Vector3 gravityDirection = new Vector3(0, -1, 0); // Set gravity direction
     Vector3 gravityVector = new Vector3(0f,0f,0f);
+    public bool noGravity;
     void Start()
     {
         rb = this.GetComponent<Rigidbody>();        
     }
     void Update()
     {
+        if(noGravity)
+        {
+            rb.velocity = Vector3.zero;
+        }
         if(this.tag != "Interacting")
         {
             if (inStasis)

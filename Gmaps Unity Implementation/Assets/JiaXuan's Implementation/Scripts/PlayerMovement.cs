@@ -50,14 +50,17 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 gravityVector = Vector3.down * -gravity * rb.mass;
                 // Use Rigidbody.AddForce to apply constant force in the downward direction
                 rb.AddForce(gravityVector, ForceMode.Force);
-                
                 // Move the player
                 transform.Translate(move * speed * Time.deltaTime, Space.World);
+                //if player falls down due to regular gravity, ensure that they always land on their feet
+                float uprightSpeed = 5.0f;
+                Quaternion uprightRotation = Quaternion.FromToRotation(transform.up, Vector3.up);
+                rb.MoveRotation(Quaternion.Slerp(rb.rotation, uprightRotation * rb.rotation, uprightSpeed * Time.deltaTime));
+            
             }
 
             if (Input.GetButtonUp("Jump") && check.isGrounded)
             {
-                
                 // Calculate the jump velocity based on the new gravity direction
                 float jumpVelocity = Mathf.Sqrt(2f * Mathf.Abs(jumpHeight) * Mathf.Abs(-gravity));
                 //have it scale to mass
@@ -76,12 +79,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log(jumpVector);
                 // Move this line to ensure isGrounded is set after the jump force is applied
                 check.isGrounded = false;
-                
             }
-
-
-
-
         }
     }
 

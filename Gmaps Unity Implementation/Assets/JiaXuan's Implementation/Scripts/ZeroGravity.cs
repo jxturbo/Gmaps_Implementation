@@ -14,6 +14,10 @@ public class ZeroGravity : MonoBehaviour
 
     void Update()
     {
+        if(noGravity)
+        {
+            rb.velocity = Vector3.zero;
+        }
         if (Input.GetKeyDown(KeyCode.Z))
         {
             noGravity = !noGravity;
@@ -49,7 +53,6 @@ public class ZeroGravity : MonoBehaviour
                     Vector3 upwardsVector = hit.normal;
                     // Start moving the Rigidbody to the hit point
                     StartCoroutine(GravityShift(hit.point, upwardsVector));
-                    gravityStasis.GravityStasisObjectAll(hit.point, upwardsVector);
                     // Log the name of the object that was hit
                     Debug.Log(hit.collider.gameObject.name);
                 }
@@ -74,7 +77,7 @@ public class ZeroGravity : MonoBehaviour
         {
             Vector3 newPosition = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / duration);
             rb.MovePosition(newPosition);
-
+            this.transform.Translate(newPosition - rb.transform.position, Space.World);
             // Rotate the Rigidbody to align with the downwards vector
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, destRot, (elapsedTime / duration) * 0.25f));
 
