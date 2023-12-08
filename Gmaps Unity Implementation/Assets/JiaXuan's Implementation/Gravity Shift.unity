@@ -231,7 +231,7 @@ Rigidbody:
   m_GameObject: {fileID: 18588274}
   serializedVersion: 2
   m_Mass: 20
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -252,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inStasis: 0
   gravity: -9.81
+  noGravity: 0
 --- !u!1 &23510169
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +642,7 @@ Rigidbody:
   m_GameObject: {fileID: 356862021}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -662,6 +663,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inStasis: 0
   gravity: -9.81
+  noGravity: 0
 --- !u!1 &363932293
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,7 +772,7 @@ Rigidbody:
   m_GameObject: {fileID: 363932293}
   serializedVersion: 2
   m_Mass: 20
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -791,6 +793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inStasis: 0
   gravity: -9.81
+  noGravity: 0
 --- !u!1 &410298678
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,6 +929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stasisActive: 0
   objectInStasis: 0
+  orignalObjectParent: {fileID: 979455404}
 --- !u!1 &435494326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1038,7 @@ Rigidbody:
   m_GameObject: {fileID: 435494326}
   serializedVersion: 2
   m_Mass: 20
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -1055,6 +1059,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inStasis: 0
   gravity: -9.81
+  noGravity: 0
 --- !u!1 &437818870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1344,7 +1349,7 @@ Rigidbody:
   m_GameObject: {fileID: 473358820}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -1365,6 +1370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inStasis: 0
   gravity: -9.81
+  noGravity: 0
 --- !u!1 &833076728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,7 +1480,7 @@ Rigidbody:
   m_GameObject: {fileID: 833076728}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -1495,6 +1501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inStasis: 0
   gravity: -9.81
+  noGravity: 0
 --- !u!1 &979455403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1518,7 +1525,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979455403}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 20.370205, y: -12.362339, z: -30.45099}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1637,6 +1644,8 @@ MonoBehaviour:
   rb: {fileID: 410298689}
   ZeroGravity: {fileID: 410298686}
   rotationReset: 0
+  DetachCamera: 0
+  cameraHolder: {fileID: 1769535471}
 --- !u!114 &1038083969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1760,7 +1769,7 @@ Rigidbody:
   m_GameObject: {fileID: 1050924404}
   serializedVersion: 2
   m_Mass: 20
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -1781,6 +1790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inStasis: 0
   gravity: -9.81
+  noGravity: 0
 --- !u!1 &1168188616
 GameObject:
   m_ObjectHideFlags: 0
@@ -2261,7 +2271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1769535470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5399997, z: -2.9}
+  m_LocalPosition: {x: 0, y: 2.71, z: -3.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
