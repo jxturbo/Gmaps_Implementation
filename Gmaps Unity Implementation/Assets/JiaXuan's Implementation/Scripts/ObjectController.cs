@@ -57,18 +57,16 @@ public class ObjectController : MonoBehaviour
 
     IEnumerator GravityStasisObject(Vector3 targetPosition, Vector3 upwardsVector)
     {
-        float duration = 2f;
+        float duration = 1f;
         float elapsedTime = 0f;
         Vector3 initialPosition = rb.transform.position;
         // Ensure vectors are normalized
         Vector3 forwardVector = Vector3.Cross(rb.transform.right, upwardsVector).normalized;
         Quaternion destRot = Quaternion.LookRotation(forwardVector, upwardsVector);
-
         while (elapsedTime < duration)
         {
             Vector3 newPosition = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / duration);
             rb.MovePosition(newPosition);
-
             // Rotate the Rigidbody to align with the downwards vector
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, destRot, (elapsedTime / duration) * 0.25f));
 

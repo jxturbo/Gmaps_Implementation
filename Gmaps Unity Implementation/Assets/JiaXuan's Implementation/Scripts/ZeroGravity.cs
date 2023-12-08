@@ -67,12 +67,10 @@ public class ZeroGravity : MonoBehaviour
         float duration = 2f;
         float elapsedTime = 0f;
         Vector3 initialPosition = rb.transform.position;
-
         // Ensure vectors are normalized
         Debug.Log(rb.transform.right);
         Vector3 forwardVector = Vector3.Cross(rb.transform.right, upwardsVector).normalized;
         Quaternion destRot = Quaternion.LookRotation(forwardVector, upwardsVector);
-
         while (elapsedTime < duration)
         {
             Vector3 newPosition = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / duration);
@@ -84,7 +82,6 @@ public class ZeroGravity : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
         isMoving = false;
         noGravity = false;
         platformShift = true;
