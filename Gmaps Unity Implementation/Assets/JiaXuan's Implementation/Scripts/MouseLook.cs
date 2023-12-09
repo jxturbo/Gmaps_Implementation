@@ -23,31 +23,28 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //here mostly just to prevent this particular case
+        //since player and camera always face forward, 
+        //all the objects they will make in stasis will try to squeeze into the same space
+        //this ensures that the camera can move, stasis and object, rotate and stasis another in a [Different] spot
+        // Takes in vertical and horizontal mouse input
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
         if(Input.GetKeyDown(KeyCode.Q))
         {
             DetachCamera = !DetachCamera;
         }
+        //this basically allows the player to rotate freely on all three axis when there is zero gravity
         if (ZeroGravity.noGravity && !ZeroGravity.isMoving)
         {
-            // Takes in vertical and horizontal mouse input
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-
-            // Rotate the player's body (or another parent object) around the y-axis based on mouseX
             playerBody.Rotate(Vector3.up * mouseX);
-            // Rotate the player's body (or another parent object) around the x-axis based on mouseY
             playerBody.Rotate(Vector3.right * mouseY);
-
-            // Rotate the Rigidbody around the y-axis based on mouseX
             rb.MoveRotation(rb.rotation * Quaternion.Euler(Vector3.up * mouseX));
-            // Rotate the Rigidbody around the x-axis based on mouseY
             rb.MoveRotation(rb.rotation * Quaternion.Euler(Vector3.right * mouseY));
         }
         else
         {
-            // Takes in vertical and horizontal mouse input
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+            //resets player rotation when transitioning from detached camera to not a detached camera
             if (rotationReset)
             {
                 playerBody.rotation = Quaternion.identity;
@@ -57,6 +54,8 @@ public class MouseLook : MonoBehaviour
             //restrictions player to looking 90 degrees up and down
             xRotation = Mathf.Clamp(xRotation, -45f, 45f);
             // Check if the camera is detached
+            //if so, allow the camera to rotate around the player while facing it as well as rotating up and down
+            //all done without moving the player
             if (DetachCamera)
             {
                 // Rotate the player camera around the player (no effect on the body)
@@ -71,20 +70,22 @@ public class MouseLook : MonoBehaviour
             else
             {
                 // If the camera is not detached, look at the player once and then continue with regular rotation
+                // Check if the camera is detached
+                //if so, allow the camera to rotate around the player while facing it as well as rotating up and down
+                //all done while rotating the player to be facing the same direction as the camera
                 if (!LookAtPlayer)
                 {
-                    // Look at the player
+                    // Look at the player once just to anchor the camera properly when returning from detached
+                    //to attached
                     transform.position = cameraHolder.position;
                     transform.LookAt(playerBody.position);
                     LookAtPlayer = true; 
                 }
                 else
                 {
-                    // Rotate the player camera to mouse input
+                    // Rotate the player camera in accordance to mouse input
                     transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-                    // Rotate the player's body (or another parent object) around the y-axis based on mouseX
                     playerBody.Rotate(Vector3.up * mouseX);
-                    // Rotate the Rigidbody around the y-axis based on mouseX
                     rb.MoveRotation(rb.rotation * Quaternion.Euler(Vector3.up * mouseX));
                 }
             }

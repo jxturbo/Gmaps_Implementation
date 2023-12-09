@@ -19,16 +19,19 @@ public class PlayerMovement : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-
         if (!ZeroGravity.noGravity)
         {
+            //simple left right movement vector
             Vector3 move = transform.right * x + transform.forward * z;
             if (ZeroGravity.platformShift)
             {
-                // Draw a ray from the player's position in the direction of the current gravity
+                // Draw a ray from the player's position downwards referencing original rotation
                 RaycastHit hit;
                 Vector3 localDownVector = transform.TransformDirection(Vector3.down);
                 gravityDirection = localDownVector;
+                //this is basically the gravity under the influence of gravity platform shift
+                //instead of drag down in world space
+                //drags the player 'down' towards their current platform
                 if (Physics.Raycast(transform.position, gravityDirection, out hit, Mathf.Infinity))
                 {
                     // Set the opposite of the hit normal as the new gravity direction
@@ -38,10 +41,11 @@ public class PlayerMovement : MonoBehaviour
                     // Use Rigidbody.AddForce to apply force in the direction of gravity
                     Debug.DrawRay(transform.position, gravityDirection * 5f, Color.blue);
                 }
+                //this ensures that even if player leaves the platform, the gravity vector updates properly
+                //eg:if player is upside down it will continue to go up even after being moving off the platform
                 rb.AddForce(gravityVector, ForceMode.Force);
-                // Adjust the move vector based on the surface normal
+                //more or less done here in order to ensure player properly moves in a slanted platform
                 move = Vector3.ProjectOnPlane(move, hit.normal).normalized;
-                // Move the player along the surface
                 transform.Translate(move * speed * Time.deltaTime, Space.World);
             }
             else
@@ -50,20 +54,24 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 gravityVector = Vector3.down * -gravity * rb.mass;
                 // Use Rigidbody.AddForce to apply constant force in the downward direction
                 rb.AddForce(gravityVector, ForceMode.Force);
-                // Move the player
+                // Moves the player in accordance to the vector smoothly
                 transform.Translate(move * speed * Time.deltaTime, Space.World);
                 //if player falls down due to regular gravity, ensure that they always land on their feet
+                //by ensuring their bottom is the one that hits the ground
                 float uprightSpeed = 5.0f;
                 Quaternion uprightRotation = Quaternion.FromToRotation(transform.up, Vector3.up);
                 rb.MoveRotation(Quaternion.Slerp(rb.rotation, uprightRotation * rb.rotation, uprightSpeed * Time.deltaTime));
             
             }
-
+            //checks if player is on a surface before letting them jump
+            //so no infinite air jumps
             if (Input.GetButtonUp("Jump") && check.isGrounded)
             {
-                // Calculate the jump velocity based on the new gravity direction
+                // Calculate the jump velocity based on the new gravity direction/orignal direction
                 float jumpVelocity = Mathf.Sqrt(2f * Mathf.Abs(jumpHeight) * Mathf.Abs(-gravity));
-                //have it scale to mass
+                //have it scale to mass in order to have it be adaptive
+                //eg: if player is 100kg, they jump with more force than 1kg player to reach same height
+                //(what we want: consistent jump height)
                 jumpVelocity *= rb.mass;
                 // Apply the jump velocity in the direction of the gravity vector
                 if(ZeroGravity.platformShift)
@@ -77,7 +85,6 @@ public class PlayerMovement : MonoBehaviour
                 // Use Rigidbody.AddForce to apply the jump force
                 rb.AddForce(jumpVector, ForceMode.Impulse);
                 Debug.Log(jumpVector);
-                // Move this line to ensure isGrounded is set after the jump force is applied
                 check.isGrounded = false;
             }
         }

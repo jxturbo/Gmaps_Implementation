@@ -14,10 +14,12 @@ public class ZeroGravity : MonoBehaviour
 
     void Update()
     {
+        //basically make sure that player floats in zero gravity and can't move
         if(noGravity)
         {
             rb.velocity = Vector3.zero;
         }
+        //to trigger zero gravity
         if (Input.GetKeyDown(KeyCode.Z))
         {
             noGravity = !noGravity;
@@ -28,6 +30,8 @@ public class ZeroGravity : MonoBehaviour
                 rb.transform.Translate(rb.transform.up * 2.5f, Space.World);
                 playerMovement.enabled = false; 
             }
+            //this specific code is to reset player if it was under zero gravity
+            //and allow it to function normally under regular gravity(custom and not the rigidbody's gravity)
             else if (!noGravity)
             {
                 platformShift = false;
@@ -36,13 +40,14 @@ public class ZeroGravity : MonoBehaviour
         }
         if (noGravity)
         {
+            //draws a ray forward from mouse position(better accuracy) and checks if it collides
             if (Input.GetMouseButtonDown(0) && !isMoving)
             {
                 // Get the mouse position in screen space
                 Vector3 mousePosition = Input.mousePosition;
-                // Create a ray from the center of the screen forward until it hits a surface
+                // Create a ray from the center of the screen to its forward until it hits a surface
                 Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-                // Define a layer mask to include only the "Environment" layer
+                //checks for only legal surfaces player can land on, not a box for example
                 int environmentLayerMask = 1 << LayerMask.NameToLayer("Environment");
                 // To store anything it hits
                 RaycastHit hit;
@@ -60,7 +65,11 @@ public class ZeroGravity : MonoBehaviour
         }
 
     }
-
+    //uses cross product to ensure 3 things
+    //1)player moves towards the destination the player was pointing it when they clicked the mouse(stasis blast)
+    //2)player's feet/bottom is what lands on the surface, not any other side
+    //3)player is pointing forward instead of backwards needed to smooth out rotation and ensure they dont rotate 180 degrees
+    //potentiall disorienting the player
     IEnumerator GravityShift(Vector3 targetPosition, Vector3 upwardsVector)
     {
         isMoving = true;
@@ -82,6 +91,8 @@ public class ZeroGravity : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        //player is no longer under zero gravity but still has gravity powers enabled
+        //so their new gravity is using the platform they are now on as refernece for 'down'
         isMoving = false;
         noGravity = false;
         platformShift = true;

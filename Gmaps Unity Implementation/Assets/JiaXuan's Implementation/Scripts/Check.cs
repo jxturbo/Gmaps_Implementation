@@ -5,12 +5,12 @@ using UnityEngine;
 public class Check : MonoBehaviour
 {
     public bool isGrounded = false;
+    //This code is mostly there to check if the player is currently touching the ground
+    //done on a seperate script to clean it up
     void OnCollisionStay(Collision collision)
     {
         if (!isGrounded && collision.gameObject.CompareTag("Ground"))
         {
-            // Change the layer of the collided object to "Selected"
-            //collision.gameObject.layer = LayerMask.NameToLayer("Selected");
             isGrounded = true;
         }
     }
