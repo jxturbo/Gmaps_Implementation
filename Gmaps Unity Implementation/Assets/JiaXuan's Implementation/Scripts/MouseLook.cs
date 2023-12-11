@@ -23,6 +23,15 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Mostly here to toggle the cursor on and off to allow player to close the game if needed
+        //more or less the same for time since my camera script follows the mouse 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //if its locked, unlock it, if not, lock it pretty much
+            Cursor.lockState = (Cursor.lockState == CursorLockMode.Locked) ? CursorLockMode.None : CursorLockMode.Locked;
+            //if frozen, unfreeze, same as cursor
+            Time.timeScale = (Time.timeScale == 0f) ? 1f : 0f;
+        }
         //here mostly just to prevent this particular case
         //since player and camera always face forward, 
         //all the objects they will make in stasis will try to squeeze into the same space
