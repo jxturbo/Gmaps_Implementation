@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 3f;
     public float gravity = -9.81f; 
     public float jumpHeight = 3f;
-    private Vector3 gravityDirection = new Vector3(0, 1, 0); // Set gravity direction
+    private Vector3 gravityDirection = new Vector3(0, -1, 0); // Set gravity direction
     public Transform bottom;
     public Check check;
     Vector3 gravityVector = new Vector3(0f,0f,0f);
@@ -50,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
+                //updates current gravity to just point down
+                gravityDirection = Vector3.down;
                 // Mimics constant gravity by pulling the player down
                 Vector3 gravityVector = Vector3.down * -gravity * rb.mass;
                 // Use Rigidbody.AddForce to apply constant force in the downward direction
@@ -73,15 +75,8 @@ public class PlayerMovement : MonoBehaviour
                 //eg: if player is 100kg, they jump with more force than 1kg player to reach same height
                 //(what we want: consistent jump height)
                 jumpVelocity *= rb.mass;
-                // Apply the jump velocity in the direction of the gravity vector
-                if(ZeroGravity.platformShift)
-                {
-                    jumpVector = -gravityDirection * jumpVelocity;
-                }
-                else
-                {
-                    jumpVector = gravityDirection * jumpVelocity;
-                }
+                // Apply the jump velocity in the opposite direction of the gravity vector
+                jumpVector = -gravityDirection * jumpVelocity;
                 // Use Rigidbody.AddForce to apply the jump force
                 rb.AddForce(jumpVector, ForceMode.Impulse);
                 Debug.Log(jumpVector);
