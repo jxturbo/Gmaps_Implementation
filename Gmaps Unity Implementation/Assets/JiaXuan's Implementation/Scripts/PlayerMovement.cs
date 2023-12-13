@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 3f;
     public float gravity = 9.81f; 
     public float jumpHeight = 3f;
-    private Vector3 gravityDirection = new Vector3(0, -1, 0); // Set gravity direction
+    public Vector3 gravityDirection = new Vector3(0, -1, 0); // Set gravity direction
     public Transform bottom;
     public Check check;
     Vector3 gravityVector = new Vector3(0f,0f,0f);
