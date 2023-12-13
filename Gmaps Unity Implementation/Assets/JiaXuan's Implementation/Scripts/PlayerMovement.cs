@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody rb;
     public ZeroGravity ZeroGravity;
     public float speed = 3f;
-    public float gravity = -9.81f; 
+    public float gravity = 9.81f; 
     public float jumpHeight = 3f;
     private Vector3 gravityDirection = new Vector3(0, -1, 0); // Set gravity direction
     public Transform bottom;
@@ -35,9 +35,10 @@ public class PlayerMovement : MonoBehaviour
                 if (Physics.Raycast(transform.position, gravityDirection, out hit, Mathf.Infinity))
                 {
                     // Set the opposite of the hit normal as the new gravity direction
+                    //since hit.normal is perpendicular to the surface of the platform but facing upwards
                     gravityDirection = -hit.normal.normalized;
                     // Ensure the gravity vector points in the correct direction
-                    gravityVector = gravityDirection * -gravity * rb.mass;
+                    gravityVector = gravityDirection * gravity * rb.mass;
                     // Use Rigidbody.AddForce to apply force in the direction of gravity
                     Debug.DrawRay(transform.position, gravityDirection * 5f, Color.blue);
                 }
@@ -53,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
                 //updates current gravity to just point down
                 gravityDirection = Vector3.down;
                 // Mimics constant gravity by pulling the player down
-                Vector3 gravityVector = Vector3.down * -gravity * rb.mass;
+                Vector3 gravityVector = Vector3.down * gravity * rb.mass;
                 // Use Rigidbody.AddForce to apply constant force in the downward direction
                 rb.AddForce(gravityVector, ForceMode.Force);
                 // Moves the player in accordance to the vector smoothly
@@ -70,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetButtonUp("Jump") && check.isGrounded)
             {
                 // Calculate the jump velocity based on the new gravity direction/orignal direction
-                float jumpVelocity = Mathf.Sqrt(2f * Mathf.Abs(jumpHeight) * Mathf.Abs(-gravity));
+                float jumpVelocity = Mathf.Sqrt(2f * Mathf.Abs(jumpHeight) * Mathf.Abs(gravity));
                 //have it scale to mass in order to have it be adaptive
                 //eg: if player is 100kg, they jump with more force than 1kg player to reach same height
                 //(what we want: consistent jump height)
