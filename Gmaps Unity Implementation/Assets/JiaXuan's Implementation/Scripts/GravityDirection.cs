@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GravityDirection : MonoBehaviour
 {
-    public Transform imageTransform;
     public PlayerMovement playerMovement;
     // Update is called once per frame
     void Update()
     {
+        //more or less rotates the arrow sprite to point towards the player's current 'down'
         // Get the current gravity vector
         Vector3 gravityVector = playerMovement.gravityDirection;
         float rotationAngle = Mathf.Atan2(gravityVector.x, gravityVector.y) * Mathf.Rad2Deg;
-        imageTransform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
+        transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
     }
 }
