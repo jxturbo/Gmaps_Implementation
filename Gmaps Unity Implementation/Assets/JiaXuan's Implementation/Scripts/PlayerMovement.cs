@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
                     //since hit.normal is perpendicular to the surface of the platform but facing upwards
                     gravityDirection = -hit.normal.normalized;
                     // Ensure the gravity vector points in the correct direction
-                    gravityVector = gravityDirection * gravity * rb.mass;
+                    gravityVector = gravityDirection * -gravity * rb.mass;
                     // Use Rigidbody.AddForce to apply force in the direction of gravity
                     Debug.DrawRay(transform.position, gravityDirection * 5f, Color.blue);
                 }
@@ -54,7 +54,8 @@ public class PlayerMovement : MonoBehaviour
                 //updates current gravity to just point down
                 gravityDirection = Vector3.down;
                 // Mimics constant gravity by pulling the player down
-                Vector3 gravityVector = Vector3.down * gravity * rb.mass;
+                Vector3 gravityVector = Vector3.down * -gravity * rb.mass;
+                Debug.Log(gravityVector);
                 // Use Rigidbody.AddForce to apply constant force in the downward direction
                 rb.AddForce(gravityVector, ForceMode.Force);
                 // Moves the player in accordance to the vector smoothly
