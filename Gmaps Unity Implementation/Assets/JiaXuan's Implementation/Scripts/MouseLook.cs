@@ -51,7 +51,7 @@ public class MouseLook : MonoBehaviour
             rb.MoveRotation(rb.rotation * Quaternion.Euler(Vector3.up * mouseX));
             rb.MoveRotation(rb.rotation * Quaternion.Euler(Vector3.right * mouseY));
         }
-        else
+        else if(!ZeroGravity.noGravity && !ZeroGravity.isMoving)
         {
             //resets player rotation when transitioning from detached camera to not a detached camera
             if (rotationReset)
