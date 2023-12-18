@@ -23,11 +23,17 @@ public class GravityControl : MonoBehaviour
 
             if (gravity.fixedDirection)
             {
+<<<<<<< Updated upstream
                 gravityUp = gravity.transform.up; // If fixed direction, uses colliding orbit
+=======
+                // If fixed direction, uses colliding orbit
+                gravityUp = gravity.transform.up; 
+>>>>>>> Stashed changes
             }
             else
             {
                 gravityUp = (transform.position - gravity.transform.position).normalized; //  
+<<<<<<< Updated upstream
             }
             Vector3 localUp = transform.up;  
             // Player's upward direction
@@ -38,6 +44,17 @@ public class GravityControl : MonoBehaviour
             transform.up = Vector3.Lerp(transform.up, gravityUp, rotationSpeed * Time.deltaTime);
             // Makes it so that the player slowly rotate overtime to adjust to new gravity 
 
+=======
+            } 
+
+            // Player's upward direction
+            Vector3 localUp = transform.up;
+            
+            // Makes it so that the player slowly rotate overtime to adjust to new gravity
+            Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityUp) * transform.rotation;
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); 
+
+>>>>>>> Stashed changes
             rb.AddForce((-gravityUp * gravity.gravity) * rb.mass);
 
         }
