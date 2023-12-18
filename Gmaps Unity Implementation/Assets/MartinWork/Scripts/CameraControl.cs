@@ -21,17 +21,17 @@ public class CameraControl : MonoBehaviour
     {
         if (playerTransform != null)
         {
-            CameraRot();
-            CameraPos();
+            CamRotation();
+            RepositionCam();
         }
     }
 
-    private void CameraRot()
+    private void CamRotation()
     {
         transform.RotateAround(playerTransform.position, Vector3.up, rotationSpeed * Time.deltaTime);
     }
 
-    private void CameraPos()
+    private void RepositionCam()
     {
         // Calculate CAMERA target position 
         targetPos = playerTransform.position - playerTransform.forward * distance + Vector3.up * height;

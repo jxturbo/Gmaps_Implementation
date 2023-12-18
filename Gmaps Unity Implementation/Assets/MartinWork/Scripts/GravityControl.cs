@@ -21,26 +21,26 @@ public class GravityControl : MonoBehaviour
         // Checks for gravity 
         if (gravity) 
         {
-            Vector3 gravityUp = Vector3.zero;
+            Vector3 gravityDown = Vector3.zero;
 
             if (gravity.fixedDirection)
             {
                 // If fixed direction, uses colliding orbit
-                gravityUp = gravity.transform.up; 
+                gravityDown = gravity.transform.up; 
             }
             else
             {
-                gravityUp = (transform.position - gravity.transform.position).normalized; //  
+                gravityDown = (transform.position - gravity.transform.position).normalized; //  
             } 
 
             // Player's upward direction
             Vector3 localUp = transform.up;
             
             // Makes it so that the player slowly rotate overtime to adjust to new gravity
-            Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityUp) * transform.rotation;
+            Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityDown) * transform.rotation;
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); 
 
-            rb.AddForce((-gravityUp * gravity.gravity) * rb.mass);
+            rb.AddForce((-gravityDown * gravity.gravity) * rb.mass);
 
             // Switches off gravity in Rigidbody when in field
             inGravityField = true;
