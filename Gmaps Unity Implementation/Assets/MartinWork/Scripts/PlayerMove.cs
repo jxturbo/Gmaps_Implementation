@@ -6,7 +6,6 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed = 5.0f;
     public float jumpForce = 5.0f;
-    public float rotationSpeed = 50.0f;
     public bool isOnGround = false;
 
     private float hInput;
@@ -20,30 +19,27 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        // Ensures my PLAYER stays upright
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; 
-
-        hInput = Input.GetAxis("Horizontal"); // A & D keys
-        vInput = Input.GetAxis("Vertical"); // W & S keys
+        hInput = Input.GetAxis("Horizontal");
+        vInput = Input.GetAxis("Vertical");
 
         transform.Translate(Vector3.forward * Time.deltaTime * speed * vInput);
-
-        // Rotate the PLAYER around
-        transform.Rotate(transform.up, hInput * rotationSpeed * Time.deltaTime);
+        transform.Translate(Vector3.right * Time.deltaTime * speed * hInput);
 
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
+            // rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            // isOnGround = false; 
+            // Previous jump use 
+
             Jump();
-        } 
+        }
     }
 
     private void Jump()
     {
-        // Reset velocity 
-        rb.velocity = Vector3.zero;
+        rb.velocity = Vector3.zero; // Reset velocity 
 
-        // Set the jump direction to be PLAYER's 'UP'
-        Vector3 jumpDir = transform.up; 
+        Vector3 jumpDir = transform.up; // Set the jump direction to be player's UP
 
         rb.AddForce(jumpDir * jumpForce, ForceMode.Impulse);
         isOnGround = false;
