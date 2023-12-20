@@ -4,59 +4,53 @@ using UnityEngine;
 
 public class GravityControl : MonoBehaviour
 {
-    public GravityOrbit gravity; 
+    public GravityOrbit gravity;
     private Rigidbody rb;
 
-    public float rotationSpeed = 20f; 
+    public float rotationSpeed = 20f;
+    private bool inGravityField = false;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>(); // Reference the object rigidbody
+        rb = GetComponent<Rigidbody>(); 
+        rb.useGravity = true;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        if(gravity) // Checks if there is gravity 
+        // Checks for gravity 
+        if (gravity) 
         {
-            Vector3 gravityUp = Vector3.zero;
+            Vector3 gravityDown = Vector3.zero;
 
             if (gravity.fixedDirection)
             {
-<<<<<<< Updated upstream
-                gravityUp = gravity.transform.up; // If fixed direction, uses colliding orbit
-=======
                 // If fixed direction, uses colliding orbit
-                gravityUp = gravity.transform.up; 
->>>>>>> Stashed changes
+                gravityDown = gravity.transform.up; 
             }
             else
             {
-                gravityUp = (transform.position - gravity.transform.position).normalized; //  
-<<<<<<< Updated upstream
-            }
-            Vector3 localUp = transform.up;  
-            // Player's upward direction
-             
-            Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityUp) * transform.rotation; 
-            //  
-
-            transform.up = Vector3.Lerp(transform.up, gravityUp, rotationSpeed * Time.deltaTime);
-            // Makes it so that the player slowly rotate overtime to adjust to new gravity 
-
-=======
+                gravityDown = (transform.position - gravity.transform.position).normalized; //  
             } 
 
             // Player's upward direction
             Vector3 localUp = transform.up;
             
             // Makes it so that the player slowly rotate overtime to adjust to new gravity
-            Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityUp) * transform.rotation;
+            Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityDown) * transform.rotation;
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); 
 
->>>>>>> Stashed changes
-            rb.AddForce((-gravityUp * gravity.gravity) * rb.mass);
+            rb.AddForce((-gravityDown * gravity.gravity) * rb.mass);
 
+            // Switches off gravity in Rigidbody when in field
+            inGravityField = true;
+            rb.useGravity = false; 
+        }
+        else if (inGravityField)
+        {
+            // Switches on gravity in Rigidbody when in field
+            rb.useGravity = true; 
+            inGravityField = false;
         }
     }
 }
