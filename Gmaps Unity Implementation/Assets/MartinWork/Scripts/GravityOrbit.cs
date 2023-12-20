@@ -5,7 +5,9 @@ using UnityEngine;
 public class GravityOrbit : MonoBehaviour
 {
     public float gravity;
-    public bool fixedDirection; // If gravity pushes player only down
+
+    // If gravity pushes player only down
+    public bool fixedDirection; 
      
     private void OnTriggerEnter(Collider other)
     {
@@ -20,10 +22,11 @@ public class GravityOrbit : MonoBehaviour
         {
             GravityControl gravityControl = other.GetComponent<GravityControl>();
 
-            // Check if the current gravity is the same as the exiting gravity field
+            // Checks if the current gravity is the same as new gravity field
             if (gravityControl.gravity == this.GetComponent<GravityOrbit>())
             {
-                gravityControl.gravity = null; // Reset gravity when leaving the zone
+                // Reset gravity when leaving the gravity field
+                gravityControl.gravity = null; 
             }
         }
     }
